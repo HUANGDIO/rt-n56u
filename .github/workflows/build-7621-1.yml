@@ -102,9 +102,12 @@ jobs:
         sudo ./build_firmware_modify $m 0
         sudo mv -f images/*.trx /opt/images/
         done
-    - name : Upload packages
-      uses: actions/upload-artifact@master
-      if: always()
+    - name: Upload firmware to release
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: Padavan-packages
-        path: /opt/images
+        tag_name: AutoBuild
+        files: /opt/images/*
+        overwrite: true
+        file_glob: true
